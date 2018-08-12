@@ -129,51 +129,51 @@ class Scheduler:
         ],
         (3, PoolType.single_round_robin): [
             ("Pool", 0, 1),
-            ("Pool", 0, 2),
+            ("Pool", 2, 0),
             ("Pool", 1, 2)
         ],
         (3, PoolType.full_round_robin): [
             ("Pool", 0, 1),
-            ("Pool", 0, 2),
-            ("Pool", 1, 2),
             ("Pool", 2, 0),
+            ("Pool", 1, 2),
+            ("Pool", 0, 2),
             ("Pool", 1, 0),
             ("Pool", 2, 1)
         ],
         (4, PoolType.single_round_robin): [
-            ("Pool", 0, 1), ("Pool", 2, 3),
-            ("Pool", 0, 2), ("Pool", 1, 3),
+            ("Pool", 0, 1), ("Pool", 3, 2),
+            ("Pool", 2, 0), ("Pool", 1, 3),
             ("Pool", 0, 3), ("Pool", 1, 2)
         ],
         (4, PoolType.full_with_semi_finals): [
-            ("Pool", 0, 1), ("Pool", 2, 3),
-            ("Pool", 0, 2), ("Pool", 1, 3),
+            ("Pool", 0, 1), ("Pool", 3, 2),
+            ("Pool", 2, 0), ("Pool", 1, 3),
             ("Pool", 0, 3), ("Pool", 1, 2),
             ("Rank", 1, 4), ("Rank", 2, 3),
             ("Result", "V0", "V1"), ("Result", "W0", "W1")
         ],
         (6, PoolType.single_round_robin): [
-            ("Pool", 0, 1), ("Pool", 2, 3), ("Pool", 4, 5),
-            ("Pool", 0, 2), ("Pool", 1, 4), ("Pool", 3, 5),
+            ("Pool", 0, 1), ("Pool", 3, 2), ("Pool", 4, 5),
+            ("Pool", 2, 0), ("Pool", 1, 4), ("Pool", 5, 3),
             ("Pool", 0, 4), ("Pool", 2, 5), ("Pool", 1, 3),
-            ("Pool", 0, 3), ("Pool", 1, 5), ("Pool", 2, 4),
+            ("Pool", 3, 0), ("Pool", 5, 1), ("Pool", 4, 2),
             ("Pool", 0, 5), ("Pool", 3, 4), ("Pool", 1, 2)
         ],
         (6, PoolType.split_with_finals): [
             ("Pool", 0, 1), ("Pool", 3, 4),
-            ("Pool", 0, 2), ("Pool", 3, 5),
+            ("Pool", 2, 0), ("Pool", 5, 3),
             ("Pool", 1, 2), ("Pool", 4, 5),
             ("Rank", "A3", "B3"), ("Rank", "A2", "B2"), ("Rank", "A1", "B1")
         ],
         (8, PoolType.split_with_finals): [
-            ("Pool", 0, 1), ("Pool", 2, 3), ("Pool", 4, 5), ("Pool", 6, 7),
-            ("Pool", 0, 2), ("Pool", 1, 3), ("Pool", 4, 6), ("Pool", 5, 7),
+            ("Pool", 0, 1), ("Pool", 3, 2), ("Pool", 4, 5), ("Pool", 7, 6),
+            ("Pool", 2, 0), ("Pool", 1, 3), ("Pool", 6, 4), ("Pool", 5, 7),
             ("Pool", 0, 3), ("Pool", 1, 2), ("Pool", 4, 7), ("Pool", 5, 6),
             ("Rank", "A4", "B4"), ("Rank", "A3", "B3"), ("Rank", "A2", "B2"), ("Rank", "A1", "B1"),
         ],
         (8, PoolType.split_with_semi_finals): [
-            ("Pool", 0, 1), ("Pool", 2, 3), ("Pool", 4, 5), ("Pool", 6, 7),
-            ("Pool", 0, 2), ("Pool", 1, 3), ("Pool", 4, 6), ("Pool", 5, 7),
+            ("Pool", 0, 1), ("Pool", 3, 2), ("Pool", 4, 5), ("Pool", 7, 6),
+            ("Pool", 2, 0), ("Pool", 1, 3), ("Pool", 6, 4), ("Pool", 5, 7),
             ("Pool", 0, 3), ("Pool", 1, 2), ("Pool", 4, 7), ("Pool", 5, 6),
             ("Rank", "A4", "B3"), ("Rank", "A3", "B4"), ("Rank", "A2", "B1"), ("Rank", "A1", "B2"),
             ("Result", "V0", "V1"), ("Result", "W0", "W1"), ("Result", "V2", "V3"), ("Result", "W2", "W3"),
