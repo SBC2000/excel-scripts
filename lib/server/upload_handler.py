@@ -8,7 +8,7 @@ from upload_handler import password
 
 
 class UploadHandler:
-    results_url = "http://app.sbctoernooien.nl/upload.php"
+    results_url = "https://app.sbctoernooien.nl/upload.php"
 
     def __init__(self):
         pass
