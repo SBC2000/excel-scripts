@@ -104,7 +104,7 @@ class ExcelReader(ExcelBase):
             return "FWSF"
         elif pool_type == "Poule met finales":
             return "FWF"
-        elif pool_type == "Gedeeltelijke competitie"
+        elif pool_type == "Gedeeltelijke competitie":
             return "PRR"
         else:
             raise Exception("Unexpected pool type " + pool_type)
