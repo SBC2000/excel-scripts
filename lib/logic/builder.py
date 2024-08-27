@@ -56,7 +56,7 @@ class Builder:
         referees_by_name = {}
         referees_by_name.update({referee.name: referee for referee in model.referees})
         referees_by_name.update({referee.get_first_name(): referee for referee in model.referees})
-        
+
         for game in model.games:
             referees_and_jury = flat_data.get_referees_and_jury_by_game(game)
             if referees_and_jury:
@@ -82,5 +82,7 @@ class Builder:
             return PoolType.full_with_semi_finals
         elif pool_type == "FWF":
             return PoolType.full_with_finals
+        elif pool_type == "PRR":
+            return PoolType.partial_round_robin
         else:
             raise Exception("Unexpected pool type " + pool_type)

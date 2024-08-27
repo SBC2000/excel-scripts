@@ -151,3 +151,4 @@ class PoolType(Enum):
     split_with_semi_finals = 4
     full_with_semi_finals = 5
     full_with_finals = 6
+    partial_round_robin = 7

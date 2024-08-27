@@ -177,5 +177,12 @@ class Scheduler:
             ("Pool", 0, 3), ("Pool", 1, 2), ("Pool", 4, 7), ("Pool", 5, 6),
             ("Rank", "A4", "B3"), ("Rank", "A3", "B4"), ("Rank", "A2", "B1"), ("Rank", "A1", "B2"),
             ("Result", "V0", "V1"), ("Result", "W0", "W1"), ("Result", "V2", "V3"), ("Result", "W2", "W3"),
+        ],
+        (8, PoolType.partial_round_robin): [
+            ("Pool", 0, 1), ("Pool", 3, 2), ("Pool", 4, 5), ("Pool", 7, 6),
+            ("Pool", 2, 0), ("Pool", 1, 4), ("Pool", 6, 3), ("Pool", 5, 7),
+            ("Pool", 3, 0), ("Pool", 5, 1), ("Pool", 7, 2), ("Pool", 4, 6),
+            ("Pool", 4, 0), ("Pool", 1, 6), ("Pool", 2, 5), ("Pool", 7, 3),
+            ("Pool", 0, 5), ("Pool", 1, 7), ("Pool", 6, 2), ("Pool", 3, 4)
         ]
     }
