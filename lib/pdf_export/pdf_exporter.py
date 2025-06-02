@@ -2,7 +2,7 @@ import os
 
 import pdfkit
 
-from html_generator import HtmlGenerator
+from .html_generator import HtmlGenerator
 from lib.model.game import RankGame, ResultGame
 from lib.model.pool import PoolType
 from lib.model.game_schedule import GameSchedule
@@ -54,7 +54,7 @@ class PdfExporter:
 
             table = self.__create_rankings_table(sub_pool.compute_ranking(), sub_pool.games)
 
-            table_width = len(iter(table).next())
+            table_width = len(next(iter(table)))
             column_info = {"width": [15, 150] + [40] * (table_width - 6) + [26] * 4,
                            "header-alignment": ["center", "left"] + ["center"] * (table_width - 2),
                            "content-alignment": ["center", "left"] + ["center"] * (table_width - 2),

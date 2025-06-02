@@ -1,6 +1,6 @@
 from itertools import groupby
 
-from excel_base import ExcelBase
+from .excel_base import ExcelBase
 
 
 class ExcelWriter(ExcelBase):
@@ -40,11 +40,11 @@ class ExcelWriter(ExcelBase):
             header.extend([pitch.name, "Wit", "Blauw", "Scheidsrechter 1", "Scheidsrechter 2", "Jury"])
         number_of_columns = 6
 
-        previous_date = games_by_datetime_by_pitch[0].itervalues().next().datetime
+        previous_date = next(iter(games_by_datetime_by_pitch[0].values())).datetime
 
         matrix = [header]
         for game_by_pitch in games_by_datetime_by_pitch:
-            current_date = game_by_pitch.itervalues().next().datetime
+            current_date = next(iter(game_by_pitch.values())).datetime
 
             # add an empty line when the date changes
             if current_date.date() != previous_date.date():
@@ -88,7 +88,7 @@ class ExcelWriter(ExcelBase):
 
         matrix = [header]
         for game_by_pitch in normal_games_by_datetime:
-            row = [game_by_pitch.itervalues().next().game.datetime.strftime("%H:%M")]
+            row = [next(iter(game_by_pitch.values())).game.datetime.strftime("%H:%M")]
             for pitch in normal_pitches:
                 if pitch in game_by_pitch:
                     wrapper = game_by_pitch[pitch]
@@ -177,4 +177,3 @@ class ExcelWriter(ExcelBase):
             colors.append(alternate_colors[color_index])
 
         self._write_sheet(sheet, matrix, row_colors=colors)
-

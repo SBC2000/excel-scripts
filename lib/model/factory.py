@@ -1,10 +1,10 @@
-from category import Category
-from sponsor import Sponsor
-from pitch import Pitch
-from pool import Pool
-from referee import Referee
-from team import Team
-from template_game import TemplateGame
+from .category import Category
+from .sponsor import Sponsor
+from .pitch import Pitch
+from .pool import Pool
+from .referee import Referee
+from .team import Team
+from .template_game import TemplateGame
 
 
 class Factory:

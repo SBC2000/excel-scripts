@@ -1,5 +1,5 @@
 from enum import Enum
-from observable import Observable
+from .observable import Observable
 
 
 class Pool(Observable):
@@ -119,7 +119,7 @@ class Pool(Observable):
 
         # add all results together (points, goal +, goal -)
         # sort by point, saldo, goal +, name
-        return sorted(((team,) + results for team, results in team_results.iteritems()),
+        return sorted(((team,) + results for team, results in team_results.items()),
                       key=lambda t: (-t[1], t[3] - t[2], -t[2], t[0].name))
 
     def get_ranked_team(self, rank):

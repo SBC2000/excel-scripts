@@ -105,7 +105,7 @@ class Scheduler:
     def __get_games_by_pool(cls, games):
         result = {}
         for game in games:
-            if not result.has_key(game.pool):
+            if game.pool not in result:
                 result[game.pool] = []
 
             result[game.pool].append(game)

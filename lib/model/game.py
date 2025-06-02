@@ -1,6 +1,6 @@
-from observable import Observable
-from pitch import Pitch
-from team import Team
+from .observable import Observable
+from .pitch import Pitch
+from .team import Team
 
 
 class Game(Observable):

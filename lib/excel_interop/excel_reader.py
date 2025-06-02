@@ -1,6 +1,6 @@
 import re
 
-from excel_base import ExcelBase
+from .excel_base import ExcelBase
 from lib.common.flat_data import FlatData
 from lib.model.game_result import GameResult
 

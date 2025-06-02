@@ -17,7 +17,7 @@ class ExcelBase:
             count += 1
         except:
             pass
-            
+
         try:
             self.printable_schedule_saturday_sheet = workbook.sheets("Zaterdag")
             self.printable_schedule_saturday_pitch4_sheet = workbook.sheets("Zaterdag Veld 4")
@@ -25,7 +25,7 @@ class ExcelBase:
             count += 1
         except:
             pass
-            
+
         if count == 0:
             raise Exception("Not all required sheets are present in the workbook")
 
@@ -58,7 +58,7 @@ class ExcelBase:
         sheet.range(self.__excel_style(start_row, start_column)).value = matrix
 
         if row_colors:
-            row_len = iter(row_lens).next()
+            row_len = next(iter(row_lens))
             for i, color in enumerate(row_colors):
                 color_range = "{0}:{1}".format(self.__excel_style(start_row + i, start_column),
                                                self.__excel_style(start_row + i, start_column + row_len - 1))

@@ -1,4 +1,4 @@
-from scheduler import Scheduler
+from .scheduler import Scheduler
 from lib.model.model import Model
 from lib.model.pool import PoolType
 
