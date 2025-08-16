@@ -76,7 +76,7 @@ class ExcelReader(ExcelBase):
             categories.append(h)
             pools = []
             for p in v:
-                m = re.search('(.*) \((.*)\)', p)
+                m = re.search(r"(.*) \((.*)\)", p)
                 pool, abbreviation = m.group(1), m.group(2)
                 pools.append((pool, abbreviation))
             pools_by_category[h] = pools
