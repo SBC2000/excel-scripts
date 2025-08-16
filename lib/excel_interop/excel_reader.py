@@ -1,5 +1,6 @@
 import re
 
+from itertools import zip_longest
 from .excel_base import ExcelBase
 from lib.common.flat_data import FlatData
 from lib.model.game_result import GameResult
@@ -172,6 +173,6 @@ class ExcelReader(ExcelBase):
     def __load_referees_and_juries(self, sheet):
         sheet_dict = {column[0]: column[1] for column in self._load_sheet(sheet)}
 
-        return {game_id: {"referees": referees if referees else "", "jury": jury}
+        return {game_id: {"referees": referees, "jury": jury}
                 for game_id, referees, jury
-                in map(None, sheet_dict["Id"], sheet_dict["Scheidsrechters"], sheet_dict["Jury"])}
+                in zip_longest(sheet_dict["Id"], sheet_dict["Scheidsrechters"], sheet_dict["Jury"], fillvalue="")}
