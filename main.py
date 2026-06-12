@@ -1,4 +1,5 @@
 import os
+import sys
 
 import xlwings
 
@@ -47,7 +48,7 @@ def export_model():
     PersistenceHandler(os.path.dirname(workbook.fullname)).store_model(model)
 
 
-def upload_model():
+def upload_model(password):
     """
     Upload the model that is serialized to disk to the server.
     This method does NOT communicate with Excel at all.
@@ -57,7 +58,7 @@ def upload_model():
 
     model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 
-    uploader = UploadHandler()
+    uploader = UploadHandler(password)
     uploader.upload_database(model)
     uploader.upload_sponsors(model)
 
@@ -88,11 +89,11 @@ def __write_printable_schedule(workbook, model):
     ExcelWriter(workbook).write_printable_game_schedule(model.game_schedule, pool_by_game)
 
 
-def handle_results():
+def handle_results(password):
     workbook = xlwings.Book.caller()
 
     persistence_handler = PersistenceHandler(os.path.dirname(workbook.fullname))
-    upload_handler = UploadHandler()
+    upload_handler = UploadHandler(password)
     reader = ExcelReader(workbook)
 
     model = persistence_handler.load_model()
@@ -111,11 +112,11 @@ def handle_results():
     persistence_handler.store_model(model)
 
 
-def handle_referees_and_jury():
+def handle_referees_and_jury(password):
     workbook = xlwings.Book.caller()
 
     persistence_handler = PersistenceHandler(os.path.dirname(workbook.fullname))
-    upload_handler = UploadHandler()
+    upload_handler = UploadHandler(password)
     reader = ExcelReader(workbook)
 
     model = persistence_handler.load_model()
@@ -157,13 +158,13 @@ if __name__ == '__main__':
         case "export_model":
             export_model()
         case "upload_model":
-            upload_model()
+            upload_model(sys.argv[2])
         case "load_printable_schedule":
             load_printable_schedule()
         case "handle_results":
-            handle_results()
+            handle_results(sys.argv[2])
         case "handle_referees_and_jury":
-            handle_referees_and_jury()
+            handle_referees_and_jury(sys.argv[2])
         case "generate_rankings_pdf":
             generate_rankings_pdf()
         case "generate_schedule_pdf":

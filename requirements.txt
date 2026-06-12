@@ -1,0 +1,4 @@
+xlwings==0.36.5
+requests==2.34.2
+pdfkit==1.0.0
+pyinstaller==6.20.0

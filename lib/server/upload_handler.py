@@ -4,15 +4,12 @@ import requests
 from lib.model.game_result import GameResult
 from lib.model.model import Model
 
-from .password import password
-
 
 class UploadHandler:
     results_url = "https://app.sbctoernooien.nl/upload.php"
-    password = password
 
-    def __init__(self):
-        pass
+    def __init__(self, password):
+        self.password = password
 
     def upload_results(self, results):
         """
