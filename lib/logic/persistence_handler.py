@@ -6,7 +6,7 @@ from lib.model.model import Model
 
 class PersistenceHandler:
     def __init__(self, folder):
-        self.__model_file_name = os.path.join("model.bin")
+        self.__model_file_name = os.path.join(folder, "model.bin")
 
     def store_model(self, model):
         """

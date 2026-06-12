@@ -44,7 +44,7 @@ def export_model():
 
     model = builder.load(reader.read())
 
-    PersistenceHandler(os.path.dirname(__file__)).store_model(model)
+    PersistenceHandler(os.path.dirname(workbook.fullname)).store_model(model)
 
 
 def upload_model():
@@ -53,7 +53,9 @@ def upload_model():
     This method does NOT communicate with Excel at all.
     @return:
     """
-    model = PersistenceHandler(os.path.dirname(__file__)).load_model()
+    workbook = xlwings.Book.caller()
+
+    model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 
     uploader = UploadHandler()
     uploader.upload_database(model)
@@ -61,7 +63,8 @@ def upload_model():
 
 
 # def print_database():
-#    model = PersistenceHandler(os.path.dirname(__file__)).load_model()
+#    workbook = xlwings.Book.caller()
+#    model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 #    print model.get_json_database()
 
 
@@ -73,7 +76,7 @@ def load_printable_schedule():
 
     workbook = xlwings.Book.caller()
 
-    model = PersistenceHandler(os.path.dirname(__file__)).load_model()
+    model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 
     __write_printable_schedule(workbook, model)
 
@@ -88,7 +91,7 @@ def __write_printable_schedule(workbook, model):
 def handle_results():
     workbook = xlwings.Book.caller()
 
-    persistence_handler = PersistenceHandler(os.path.dirname(__file__))
+    persistence_handler = PersistenceHandler(os.path.dirname(workbook.fullname))
     upload_handler = UploadHandler()
     reader = ExcelReader(workbook)
 
@@ -111,7 +114,7 @@ def handle_results():
 def handle_referees_and_jury():
     workbook = xlwings.Book.caller()
 
-    persistence_handler = PersistenceHandler(os.path.dirname(__file__))
+    persistence_handler = PersistenceHandler(os.path.dirname(workbook.fullname))
     upload_handler = UploadHandler()
     reader = ExcelReader(workbook)
 
@@ -130,24 +133,49 @@ def handle_referees_and_jury():
 
 
 def generate_rankings_pdf():
-    model = PersistenceHandler(os.path.dirname(__file__)).load_model()
+    workbook = xlwings.Book.caller()
+
+    model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 
     # there is no way to generalize this; that's why this setting is top-level. It is not needed
-    page_layout = [["H1"], ["H2"], ["H3"], ["H4"], ["D1"], ["D2"], ["JB", "MBC", "JC"], ["GD"], ["GE"]]
+    # page_layout = [["H1"], ["H2"], ["H3"], ["H4"], ["D1"], ["D2"], ["JB", "MBC", "JC"], ["GD"], ["GE"]]
 
-    PdfExporter().export_rankings(model.pools, page_layout)
+    PdfExporter().export_rankings(model.pools)
 
 
 def generate_schedule_pdf(export_saturday, export_sunday):
-    model = PersistenceHandler(os.path.dirname(__file__)).load_model()
+    workbook = xlwings.Book.caller()
+
+    model = PersistenceHandler(os.path.dirname(workbook.fullname)).load_model()
 
     PdfExporter().export_schedule(model.game_schedule, export_saturday, export_sunday)
 
 if __name__ == '__main__':
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Voor toernooi.xlsm'))
-    xlwings.Book(path).set_mock_caller()
+    match sys.argv[1]:
+        case "generate_schedule":
+            generate_schedule()
+        case "export_model":
+            export_model()
+        case "upload_model":
+            upload_model()
+        case "load_printable_schedule":
+            load_printable_schedule()
+        case "handle_results":
+            handle_results()
+        case "handle_referees_and_jury":
+            handle_referees_and_jury()
+        case "generate_rankings_pdf":
+            generate_rankings_pdf()
+        case "generate_schedule_pdf":
+            generate_schedule_pdf(True, True)
+        case "generate_schedule_pdf_saterday":
+            generate_schedule_pdf(True, False)
+        case "generate_schedule_pdf_sunday":
+            generate_schedule_pdf(False, True)
+        case _:
+            print("Usage: main.exe generate_schedule | export_model | upload_model | load_printable_schedule | handle_results | handle_referees_and_jury | generate_rankings_pdf | generate_schedule_pdf | generate_schedule_pdf_saterday | generate_schedule_pdf_sunday")
 
-    # handle_referees_and_jury()
-    # UploadHandler().upload_message("Test", "Dit is een test")
-    export_model()
 
+    # path = os.path.abspath(os.path.join(os.path.dirname(workbook.fullname), 'Voor toernooi.xlsm'))
+    # xlwings.Book(path).set_mock_caller()
+    # generate_schedule()
