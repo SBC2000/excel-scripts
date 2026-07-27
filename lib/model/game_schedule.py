@@ -91,10 +91,11 @@ class GameSchedule:
 
     @classmethod
     def __compute_games_by_team(cls, games):
-        games_by_team = [(game.home_team, game) for game in games] + [(game.away_team, game) for game in games]
-        return {
-            team: list(map(lambda t: t[1], ts)) for team, ts in groupby(games_by_team, lambda t: t[0])
-            }
+        games_by_team = {}
+        for game in games:
+            games_by_team.setdefault(game.home_team, []).append(game)
+            games_by_team.setdefault(game.away_team, []).append(game)
+        return games_by_team
 
 
 class GameWrapper:
