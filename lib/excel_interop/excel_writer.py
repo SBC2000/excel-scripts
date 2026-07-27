@@ -52,7 +52,7 @@ class ExcelWriter(ExcelBase):
                 previous_date = current_date
                 matrix.append(row)
 
-            row = [current_date.strftime("%H:%M")]
+            row = [current_date.time()]
             for pitch in pitches:
                 if pitch in game_by_pitch:
                     game = game_by_pitch[pitch]
@@ -63,6 +63,7 @@ class ExcelWriter(ExcelBase):
             matrix.append(row)
 
         self._write_sheet(sheet, matrix)
+        sheet.range("A2:A{0}".format(len(matrix))).number_format = "h:mm"
 
     def write_colored_game_schedule(self, game_schedule):
         """
@@ -88,7 +89,7 @@ class ExcelWriter(ExcelBase):
 
         matrix = [header]
         for game_by_pitch in normal_games_by_datetime:
-            row = [next(iter(game_by_pitch.values())).game.datetime.strftime("%H:%M")]
+            row = [next(iter(game_by_pitch.values())).game.datetime.time()]
             for pitch in normal_pitches:
                 if pitch in game_by_pitch:
                     wrapper = game_by_pitch[pitch]
@@ -101,6 +102,8 @@ class ExcelWriter(ExcelBase):
             matrix.append(row)
 
         self._write_sheet(self.schedule_sheet, matrix)
+        sheet = self.schedule_sheet
+        sheet.range("A2:A{0}".format(len(matrix))).number_format = "h:mm"
 
     def write_games_per_team(self, relevant_pools, game_schedule):
         """
@@ -117,7 +120,7 @@ class ExcelWriter(ExcelBase):
                 row = [pool_name, team.name]
                 pool_name = ""  # only show pool name in front of first team
                 for game in sorted(game_schedule.get_games_by_team(team), key=lambda g: g.datetime):
-                    row.extend([game.pitch.name, game.datetime.strftime("%H:%M")])
+                    row.extend([game.pitch.name, game.datetime.time()])
 
                 # make sure that all rows have the same length by appending ""
                 # and then taking the starting slice of the right size
@@ -125,6 +128,10 @@ class ExcelWriter(ExcelBase):
                 matrix.append(row[:required_length])
 
         self._write_sheet(self.games_per_team_sheet, matrix)
+        # Time values are in every other column starting at index 3 (D, F, H, ...)
+        for i in range(3, required_length, 2):
+            col = chr(ord('A') + i)
+            self.games_per_team_sheet.range("{0}1:{0}{1}".format(col, len(matrix))).number_format = "h:mm"
 
     def write_printable_game_schedule(self, game_schedule, pool_by_game):
         """
@@ -156,7 +163,7 @@ class ExcelWriter(ExcelBase):
 
         for game in games:
             matrix.append([
-                game.datetime.strftime("%H:%M"),
+                game.datetime.time(),
                 game.pitch.name,
                 pool_by_game[game].abbreviation,
                 game.get_home_team_name(),
@@ -177,3 +184,4 @@ class ExcelWriter(ExcelBase):
             colors.append(alternate_colors[color_index])
 
         self._write_sheet(sheet, matrix, row_colors=colors)
+        sheet.range("A2:A{0}".format(len(matrix))).number_format = "h:mm"
