@@ -52,7 +52,7 @@ class ExcelWriter(ExcelBase):
                 previous_date = current_date
                 matrix.append(row)
 
-            row = [current_date.time()]
+            row = [self.__time_to_serial(current_date.time())]
             for pitch in pitches:
                 if pitch in game_by_pitch:
                     game = game_by_pitch[pitch]
@@ -89,7 +89,7 @@ class ExcelWriter(ExcelBase):
 
         matrix = [header]
         for game_by_pitch in normal_games_by_datetime:
-            row = [next(iter(game_by_pitch.values())).game.datetime.time()]
+            row = [self.__time_to_serial(next(iter(game_by_pitch.values())).game.datetime.time())]
             for pitch in normal_pitches:
                 if pitch in game_by_pitch:
                     wrapper = game_by_pitch[pitch]
@@ -120,7 +120,7 @@ class ExcelWriter(ExcelBase):
                 row = [pool_name, team.name]
                 pool_name = ""  # only show pool name in front of first team
                 for game in sorted(game_schedule.get_games_by_team(team), key=lambda g: g.datetime):
-                    row.extend([game.pitch.name, game.datetime.time()])
+                    row.extend([game.pitch.name, self.__time_to_serial(game.datetime.time())])
 
                 # make sure that all rows have the same length by appending ""
                 # and then taking the starting slice of the right size
@@ -163,7 +163,7 @@ class ExcelWriter(ExcelBase):
 
         for game in games:
             matrix.append([
-                game.datetime.time(),
+                self.__time_to_serial(game.datetime.time()),
                 game.pitch.name,
                 pool_by_game[game].abbreviation,
                 game.get_home_team_name(),
@@ -185,3 +185,8 @@ class ExcelWriter(ExcelBase):
 
         self._write_sheet(sheet, matrix, row_colors=colors)
         sheet.range("A2:A{0}".format(len(matrix))).number_format = "h:mm"
+
+    @staticmethod
+    def __time_to_serial(t):
+        """Convert a datetime.time to an Excel serial time number (float between 0 and 1)."""
+        return (t.hour * 3600 + t.minute * 60 + t.second) / 86400.0
