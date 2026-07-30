@@ -61,7 +61,7 @@ class ExcelReader(ExcelBase):
             elif column[0] == pitch:
                 ids = column[1]
 
-        for game_id, referee1, referee2, jury in map(None, ids, referees1, referees2, juries):
+        for game_id, referee1, referee2, jury in zip_longest(ids, referees1, referees2, juries):
             if game_id:
                 result[game_id] = {"referee1": referee1, "referee2": referee2, "jury": jury}
 
