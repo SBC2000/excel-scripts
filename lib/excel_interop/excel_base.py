@@ -50,11 +50,20 @@ class ExcelBase:
 
         return result
 
-    def _write_sheet(self, sheet, matrix, start_row=0, start_column=0, row_colors=[]):
+    def _write_sheet(self, sheet, matrix, start_row=0, start_column=0, row_colors=[], time_columns=[]):
         row_lens = set(len(row) for row in matrix)
         if len(row_lens) != 1:
             raise Exception("Only rectangular matrices are supported")
         sheet.clear()
+
+        # Pre-set text format before writing values to prevent locale-dependent auto-formatting
+        if time_columns:
+            for col_index in time_columns:
+                col_letter = self.__column_letter(col_index)
+                end_row = start_row + len(matrix)
+                time_range = "{0}{1}:{0}{2}".format(col_letter, start_row + 1, end_row)
+                sheet.range(time_range).number_format = "@"
+
         sheet.range(self.__excel_style(start_row, start_column)).value = matrix
 
         if row_colors:
@@ -77,6 +86,16 @@ class ExcelBase:
             col, rem = divmod(col - 1, 26)
             result[:0] = chr(rem + ord('A'))
         return ''.join(result) + str(row)
+
+    @staticmethod
+    def __column_letter(col):
+        """Convert a 0-based column index to an Excel column letter (A, B, ..., Z, AA, ...)."""
+        col += 1
+        result = []
+        while col:
+            col, rem = divmod(col - 1, 26)
+            result[:0] = chr(rem + ord('A'))
+        return ''.join(result)
 
     @staticmethod
     def __get_iterable(x):
